@@ -49,7 +49,7 @@
 
   /* ═══ NAV ═══ */
   nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 101;
+    display: none;
     background: rgba(13,43,85,0.97);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(201,146,43,0.5);
@@ -84,7 +84,7 @@
   #hero {
     min-height: 100vh; background: var(--navy);
     display: flex; align-items: center; position: relative; overflow: hidden;
-    padding-top: 58px;
+    padding-top: 0;
   }
   .hero-grid-bg {
     position: absolute; inset: 0;
@@ -213,7 +213,7 @@
   .sala-stamp {
     position: absolute; top: 3.5rem; right: 3.5rem;
     display: flex; flex-direction: column; align-items: flex-end;
-    pointer-events: none; z-index: 0; opacity: 0; transform: translateY(10px);
+    pointer-events: none; z-index: 0; opacity: 1; transform: none;
     transition: opacity 0.7s ease, transform 0.7s ease;
   }
   .sala-stamp.visible { opacity: 1; transform: translateY(0); }
@@ -229,7 +229,7 @@
   .light-section .sala-stamp-word { color: rgba(13,43,85,0.13); }
 
   .sala-nav {
-    position: fixed; right: 1.8rem; top: 50%; transform: translateY(-50%);
+    display: none;
     z-index: 90; display: flex; flex-direction: column; gap: 0.55rem; align-items: flex-end;
   }
   .sala-nav-item {
@@ -264,11 +264,11 @@
   .sala-nav.on-light .sala-nav-roman { color: var(--navy); }
   .sala-nav.on-light .sala-nav-item.active .sala-nav-dot { background: var(--gold); box-shadow: 0 0 0 3px rgba(201,146,43,0.25); }
 
-  .sala-progress-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(13,43,85,0.1); z-index: 99; }
+  .sala-progress-bar { display: none; height: 3px; background: rgba(13,43,85,0.1); z-index: 99; }
   .sala-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--oecd-blue), var(--gold)); transition: width 0.2s ease; }
 
   .sala-toast {
-    position: fixed; bottom: 2.2rem; left: 50%;
+    display: none; bottom: 2.2rem; left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: rgba(13,43,85,0.94); backdrop-filter: blur(12px);
     border: 1px solid rgba(201,146,43,0.35); border-radius: 100px;
@@ -614,7 +614,7 @@
   .footer-links a:hover { color: var(--light-blue); }
 
   /* ═══ ANIMATION ═══ */
-  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in { opacity: 1; transform: none; }
   .fade-in.visible { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) {
     .fade-in { opacity: 1; transform: none; transition: none; }
@@ -728,6 +728,11 @@
 .ix-chip.navy{background:rgba(13,43,85,.09);color:var(--navy);}
 .ix-chip.irmo{background:var(--gold-bright);color:var(--navy);font-weight:600;}
 
+
+/* --- fix: disable legacy floating toast + guarantee interactive panes visible --- */
+.sala-toast{display:none !important;}
+.ix-stage,.ix-controls,.ix-legend,.ix-imgnote{opacity:1 !important;transform:none !important;}
+#ix1left,#ix2left{min-height:1px;}
 </style>
 </head>
 <body>
@@ -752,25 +757,25 @@
   <span class="sala-toast-name" id="salaToastName">Context</span>
 </div>
 
-<!-- ═══ TOP NAV ═══ -->
-<nav>
-  <div class="nav-inner">
-    <a href="#hero" class="nav-brand">
-      <span class="nav-logo">IR</span>
-      <span class="nav-title">IRMO Library &middot; Digital Exhibition</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#context">Context</a></li>
-      <li><a href="#holdings">Holdings</a></li>
-      <li><a href="#making">Making</a></li>
-      <li><a href="#rights">Rights</a></li>
-      <li><a href="#analysis">Analysis</a></li>
-      <li><a href="#citations">Citations</a></li>
-      <li><a href="#apparatus">Sources</a></li>
-      <li class="nav-lang"><a href="hrvatska-u-oecd-zrcalu.html">HR</a></li>
-    </ul>
-  </div>
-</nav>
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
+<!-- removed -->
 
 <!-- ═══ HERO ═══ -->
 <section id="hero">
@@ -1166,7 +1171,7 @@
     <div class="section-divider fade-in"></div>
     <p class="section-lead fade-in">Every OECD publication about Croatia, as a cover. Select one to see, on the right, the people named from Croatia who took part in writing it, and the Croatian research it cites. The pips on each cover show 👤 named participants and, in gold, cited Croatian articles.</p>
 
-    <div class="ix-imgnote fade-in">
+    <div class="ix-imgnote">
       <strong>Covers:</strong> tiles are placeholders bearing the publication title. With an image folder whose files are named by the DOI suffix (e.g. <code>bace00c4-en.jpg</code>), enter the folder path and the tiles are replaced by images.
       <div class="ix-imgrow">
         <input id="ixImgbase" placeholder="e.g. covers/  or  https…/covers/">
@@ -1176,18 +1181,18 @@
       </div>
     </div>
 
-    <div class="ix-legend fade-in">
+    <div class="ix-legend">
       <span><span class="ix-sw auth"></span>author / co-signatory</span>
       <span><span class="ix-sw coord"></span>coordination</span>
       <span><span class="ix-sw other"></span>consultation</span>
     </div>
-    <div class="ix-controls fade-in">
+    <div class="ix-controls">
       <div class="ix-search"><input id="ix1q" placeholder="Search publications by title…"></div>
       <button class="ix-btn" id="ix1filt">Filter: all ▾</button>
       <button class="ix-btn" id="ix1sort">Sort: participants ▾</button>
       <span class="ix-count" id="ix1count"></span>
     </div>
-    <div class="ix-stage fade-in">
+    <div class="ix-stage">
       <div id="ix1left"></div>
       <div class="ix-right"><div class="ix-detail" id="ix1detail">
         <div class="ix-empty"><div class="big">Select a publication</div>Click a cover to see who took part and whose research it cites.</div>
@@ -1209,17 +1214,17 @@
     <div class="section-divider fade-in"></div>
     <p class="section-lead fade-in">Every Croatian-authored article the OECD cites. Select one to see which OECD publications cite it — in gold those that are themselves about Croatia, in grey the thematic reports on other countries, where Croatian scholarship serves as a general expert source.</p>
 
-    <div class="ix-legend fade-in">
+    <div class="ix-legend">
       <span><span class="ix-sw hr"></span>cited by a publication about Croatia</span>
       <span><span class="ix-sw out"></span>cited by a thematic publication (another country)</span>
     </div>
-    <div class="ix-controls fade-in">
+    <div class="ix-controls">
       <div class="ix-search"><input id="ix2q" placeholder="Search articles, authors, journals…"></div>
       <button class="ix-btn" id="ix2filt">Filter: all ▾</button>
       <button class="ix-btn" id="ix2sort">Sort: OECD citations ▾</button>
       <span class="ix-count" id="ix2count"></span>
     </div>
-    <div class="ix-stage fade-in">
+    <div class="ix-stage">
       <div id="ix2left"></div>
       <div class="ix-right"><div class="ix-detail" id="ix2detail">
         <div class="ix-empty"><div class="big">Select an article</div>Click an article to see which OECD publications cite it.</div>
@@ -1581,5 +1586,17 @@ r1(); r2();
 })();
 </script>
 
+
+<script>
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(function(el){
+      var r=el.getBoundingClientRect();
+      // if it's above the current viewport bottom or already scrolled past, reveal it
+      el.classList.add('visible');
+    });
+  },400);
+});
+</script>
 </body>
 </html>
