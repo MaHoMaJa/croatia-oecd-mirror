@@ -201,10 +201,13 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
 .cover.img .cv-face{border-left:0;padding:0;background:#fff}
 .cover.img .cv-face::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(14,17,22,.12);pointer-events:none}
 .cover.img{position:relative;transform-origin:50% 55%}
-.cover.img:hover,.cover.img:focus-visible{transform:translateY(-6px) scale(1.75);z-index:6;box-shadow:0 30px 50px -18px rgba(14,17,22,.55)}
-.cover.img.on:hover,.cover.img.on:focus-visible{transform:translateY(-16px) scale(1.75)}
+.zoom{position:fixed;z-index:60;width:300px;pointer-events:none;opacity:0;transform:translateY(8px) scale(.96);transition:opacity .18s ease,transform .22s cubic-bezier(.2,.7,.2,1);background:#fff;border-radius:6px;box-shadow:0 30px 60px -20px rgba(14,17,22,.55),0 0 0 1px rgba(14,17,22,.08);overflow:hidden}
+.zoom.show{opacity:1;transform:none}
+.zoom img{display:block;width:100%;aspect-ratio:1/1.414;object-fit:cover}
+.zoom div{padding:10px 14px 12px;font-size:13px;line-height:1.35;color:var(--ink)}
+.zoom div b{display:block;font-family:var(--mono);font-weight:500;font-size:11px;color:var(--muted);margin-bottom:2px}
 .cover.img .cv-face img{image-rendering:auto}
-@media (hover:none){.cover.img:hover{transform:none}}
+@media (hover:none){.zoom{display:none}}
 .det-cover{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
 .det-cover img{width:min(220px,100%);aspect-ratio:1/1.414;object-fit:cover;flex:0 0 auto;border-radius:3px;box-shadow:0 12px 24px -12px rgba(0,0,0,.6);background:#fff}
 .cv-foot{display:flex;justify-content:space-between;align-items:center;padding:7px 9px;font-family:var(--mono);font-size:12px;color:var(--ink)}
@@ -566,6 +569,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
   </div>
   <div class="stage">
     <div class="stage-l" id="ix1left"></div>
+    <div class="zoom" id="zoom" aria-hidden="true"><img alt="" data-pin-nopin="true"><div></div></div>
     <aside class="stage-r" id="ix1detail" aria-live="polite"><div class="empty"><b>Take a cover down</b>Select a publication on the shelf to see who took part and whose research it cites.</div></aside>
   </div>
 </section>
@@ -793,12 +797,14 @@ function r1(opt){
       b.setAttribute('aria-pressed',p.doi===a1?'true':'false');
       b.setAttribute('aria-label',p.t+', '+p.y+'. '+np+' people from Croatia, '+nc+' Croatian articles cited.');
       var src=imgBase?imgBase+p.sfx+imgExt:'';
-      b.innerHTML='<div class="cv-face">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy">':'')+
+      b.innerHTML='<div class="cv-face">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy" data-pin-nopin="true">':'')+
         '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(p.t)+'</div></div>'+
         '<div class="cv-foot"><span class="'+(np?'':'z')+'"><i class="pip-p" aria-hidden="true"></i>'+np+'</span><span class="'+(nc?'':'z')+'"><i class="pip-c" aria-hidden="true"></i>'+nc+'</span></div>';
       var img=b.querySelector('img');
       if(img){if(imgOK[p.sfx]===false)img.remove();else{if(imgOK[p.sfx])b.classList.add('img');img.onload=function(){imgOK[p.sfx]=true;b.classList.add('img');};img.onerror=function(){imgOK[p.sfx]=false;img.remove();};}}
-      b.onclick=function(){a1=p.doi;r1();d1(p);};
+      b.onclick=function(){hideZoom();a1=p.doi;r1();d1(p);};
+      b.onmouseenter=function(){if(b.classList.contains('img'))showZoom(b,p);};
+      b.onmouseleave=hideZoom;
       sh.appendChild(b);
     });
     row.appendChild(sh);var pl=document.createElement('div');pl.className='plank'+(anim&&host.children.length>=prevPlanks?' anim':'');row.appendChild(pl);host.appendChild(row);
@@ -818,6 +824,14 @@ function r1(opt){
   }
   if(!L.length)host.innerHTML='<div class="none">No publications match.</div>';
 }
+var zoom=document.getElementById('zoom'),zt;
+function showZoom(b,p){clearTimeout(zt);var img=zoom.querySelector('img');img.src=imgBase+p.sfx+imgExt;zoom.querySelector('div').innerHTML='<b>'+esc(p.y)+'</b>'+esc(p.t);
+  var r=b.getBoundingClientRect(),W=300,H=W*1.414+56,x=r.right+16,y=r.top+r.height/2-H/2;
+  if(x+W>window.innerWidth-12)x=r.left-W-16;
+  y=Math.max(68,Math.min(y,window.innerHeight-H-12));
+  zoom.style.left=x+'px';zoom.style.top=y+'px';zt=setTimeout(function(){zoom.classList.add('show');},60);}
+function hideZoom(){clearTimeout(zt);zoom.classList.remove('show');}
+window.addEventListener('scroll',hideZoom,{passive:true});
 function d1(p){
   var ppl=uniqPeople(p);
   var P=ppl.length?ppl.map(function(x){return '<div class="li"><span class="mk '+rc(x.role)+'"></span><div><div>'+esc(x.name)+'</div><div class="s">'+esc(x.inst)+'</div><div class="r">'+esc(roleEN(x.role))+' · '+esc(catEN(x.cat))+'</div></div></div>';}).join('')
@@ -827,7 +841,7 @@ function d1(p){
   var d=document.getElementById('ix1detail');
   d.className='stage-r '+tc(p.th);
   var head='<div class="det-k">'+esc(p.y)+' · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+'</div><h3>'+esc(p.t)+'</h3><div class="meta"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+'</a></div>';
-  if(imgOK[p.sfx])head='<div class="det-cover"><img src="'+esc(imgBase+p.sfx+imgExt)+'" alt="Cover of '+esc(p.t)+'"><div style="min-width:0">'+head+'</div></div>';
+  if(imgOK[p.sfx])head='<div class="det-cover"><img data-pin-nopin="true" src="'+esc(imgBase+p.sfx+imgExt)+'" alt="Cover of '+esc(p.t)+'"><div style="min-width:0">'+head+'</div></div>';
   d.innerHTML='<div class="det-h">'+head+'</div>'+
     '<div class="det-b"><div class="det-sub">People from Croatia<span class="n b">'+ppl.length+'</span></div>'+P+
     '<div class="det-sub">Croatian research it cites<span class="n o">'+(p.cites||[]).length+'</span></div>'+C+'</div>';
