@@ -189,15 +189,19 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
 .shelf{display:flex;flex-wrap:wrap;gap:34px 16px;align-items:flex-end;padding:0 10px;position:relative}
 .shelf-row{margin-bottom:44px}
 .plank{height:12px;background:var(--ink);border-radius:3px;box-shadow:0 12px 18px -10px rgba(14,17,22,.5)}
-.cover{all:unset;box-sizing:border-box;cursor:pointer;width:124px;display:flex;flex-direction:column;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 10px 18px -12px rgba(14,17,22,.6);transition:transform .2s ease, box-shadow .2s ease;background:var(--paper)}
+.cover{all:unset;box-sizing:border-box;cursor:pointer;width:132px;display:flex;flex-direction:column;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 10px 18px -12px rgba(14,17,22,.6);transition:transform .2s ease, box-shadow .2s ease;background:var(--paper)}
 .cover:hover{transform:translateY(-6px)}
 .cover:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
 .cover.on{transform:translateY(-16px);box-shadow:0 0 0 3px var(--ground),0 0 0 6px var(--ink),0 22px 30px -14px rgba(14,17,22,.6)}
-.cv-face{position:relative;height:160px;padding:11px;display:flex;flex-direction:column;color:#fff;border-left:6px solid rgba(0,0,0,.22);background:var(--c,#2B303A)}
+.cv-face{position:relative;aspect-ratio:1/1.414;padding:11px;display:flex;flex-direction:column;color:#fff;border-left:6px solid rgba(0,0,0,.22);background:var(--c,#2B303A)}
 .cv-face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cv-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.1em;opacity:.85;position:relative}
 .cv-t{margin-top:auto;font-family:var(--display);font-weight:600;font-size:13px;line-height:1.15;position:relative;display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
 .cover.img .cv-top,.cover.img .cv-t{display:none}
+.cover.img .cv-face{border-left:0;padding:0;background:#fff}
+.cover.img .cv-face::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(14,17,22,.12);pointer-events:none}
+.det-cover{display:flex;gap:20px;align-items:flex-start}
+.det-cover img{width:120px;aspect-ratio:1/1.414;object-fit:cover;flex:0 0 auto;border-radius:3px;box-shadow:0 12px 24px -12px rgba(0,0,0,.6);background:#fff}
 .cv-foot{display:flex;justify-content:space-between;align-items:center;padding:7px 9px;font-family:var(--mono);font-size:12px;color:var(--ink)}
 .cv-foot span{display:inline-flex;align-items:center;gap:5px}
 .cv-foot .z{color:#9AA1AD}
@@ -757,7 +761,7 @@ set('mkPub',R1.length);set('mkArt',R2.length);set('sPub',R1.length);set('sPpl',O
 (function(){var g=document.querySelector('.tabs');g.addEventListener('click',function(e){var b=e.target.closest('.tab');if(!b)return;g.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});var f=b.dataset.f;var i=0;document.querySelectorAll('#holds .hold').forEach(function(h){var show=(f==='all'||h.dataset.c===f);h.hidden=!show;if(show&&!REDUCE){h.style.setProperty('--d',(i++*0.06)+'s');replay(h,'anim-rise');}});});})();
 
 /* ── Room VI: shelf ── */
-var imgBase='covers/',imgExt='.jpg',s1='year',f1='all',a1=null;
+var imgBase='covers/',imgExt='.jpg',s1='year',f1='all',a1=null,imgOK={};
 function r1(opt){
   var anim=opt&&opt.anim&&!REDUCE;
   var q=document.getElementById('ix1q').value.trim().toLowerCase();
@@ -788,7 +792,7 @@ function r1(opt){
         '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(p.t)+'</div></div>'+
         '<div class="cv-foot"><span class="'+(np?'':'z')+'"><i class="pip-p" aria-hidden="true"></i>'+np+'</span><span class="'+(nc?'':'z')+'"><i class="pip-c" aria-hidden="true"></i>'+nc+'</span></div>';
       var img=b.querySelector('img');
-      if(img){img.onload=function(){b.classList.add('img');};img.onerror=function(){img.remove();};}
+      if(img){if(imgOK[p.sfx]===false)img.remove();else{if(imgOK[p.sfx])b.classList.add('img');img.onload=function(){imgOK[p.sfx]=true;b.classList.add('img');};img.onerror=function(){imgOK[p.sfx]=false;img.remove();};}}
       b.onclick=function(){a1=p.doi;r1();d1(p);};
       sh.appendChild(b);
     });
@@ -817,7 +821,9 @@ function d1(p){
     :'<div class="none">This publication cites none of the Croatian articles in the set.</div>';
   var d=document.getElementById('ix1detail');
   d.className='stage-r '+tc(p.th);
-  d.innerHTML='<div class="det-h"><div class="det-k">'+esc(p.y)+' · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+'</div><h3>'+esc(p.t)+'</h3><div class="meta"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+'</a></div></div>'+
+  var head='<div class="det-k">'+esc(p.y)+' · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+'</div><h3>'+esc(p.t)+'</h3><div class="meta"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+'</a></div>';
+  if(imgOK[p.sfx])head='<div class="det-cover"><img src="'+esc(imgBase+p.sfx+imgExt)+'" alt="Cover of '+esc(p.t)+'"><div style="min-width:0">'+head+'</div></div>';
+  d.innerHTML='<div class="det-h">'+head+'</div>'+
     '<div class="det-b"><div class="det-sub">People from Croatia<span class="n b">'+ppl.length+'</span></div>'+P+
     '<div class="det-sub">Croatian research it cites<span class="n o">'+(p.cites||[]).length+'</span></div>'+C+'</div>';
   if(!REDUCE)replay(d,'anim-swap');
