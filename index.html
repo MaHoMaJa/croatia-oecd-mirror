@@ -237,6 +237,54 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
 .empty{padding:40px 28px;color:var(--muted)}
 .empty b{display:block;font-family:var(--display);font-size:28px;color:var(--ink);margin-bottom:8px;font-weight:800;letter-spacing:-.02em}
 
+/* VI — spine shelf */
+.decades{display:flex;flex-wrap:nowrap;justify-content:center;gap:0;margin:56px auto 0;border:1px solid var(--ink);border-radius:999px;width:max-content;max-width:100%;overflow:hidden}
+.decades button{font-family:var(--mono);font-size:13px;min-height:44px;padding:0 20px;border:0;border-right:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.decades button:last-child{border-right:0}
+.decades button:hover{background:rgba(14,17,22,.06)}
+.decades button[aria-pressed="true"]{background:var(--blue);color:#fff}
+.decades button span{opacity:.6;margin-left:6px}
+@media (max-width:640px){.decades button{padding:0 12px;font-size:12px}.decades button span{margin-left:4px}}
+.sp-stage{--sh:310px;--sw:50px;--cw:219px;--gap:6px;position:relative;margin-top:36px;display:flex;align-items:center;gap:8px}
+@media (max-width:640px){.sp-stage{--sh:250px;--sw:40px;--cw:177px}}
+.sp-stage::after{content:'';position:absolute;left:56px;right:56px;bottom:14px;height:12px;background:var(--ink);border-radius:3px;box-shadow:0 12px 18px -10px rgba(14,17,22,.5);pointer-events:none}
+@media (max-width:640px){.sp-stage::after{left:0;right:0}}
+.spines{flex:1;min-width:0;display:flex;align-items:flex-end;gap:var(--gap);overflow-x:auto;overflow-y:hidden;padding:44px calc(50% - var(--cw) / 2) 26px;scrollbar-width:none;outline:none;perspective:1400px}
+.spines::-webkit-scrollbar{display:none}
+.spines:focus-visible{box-shadow:inset 0 0 0 3px var(--orange);border-radius:12px}
+.sp-nav{flex:0 0 48px;height:48px;border-radius:50%;border:1px solid var(--ink);background:var(--paper);color:var(--ink);display:grid;place-items:center;cursor:pointer;z-index:2}
+.sp-nav:hover{background:var(--ink);color:#fff}
+.sp-nav:disabled{opacity:.3;cursor:default;background:var(--paper);color:var(--ink)}
+@media (max-width:640px){.sp-nav{display:none}}
+.sp{all:unset;box-sizing:border-box;flex:0 0 var(--sw);width:var(--sw);height:var(--sh);position:relative;cursor:pointer;transition:flex-basis .6s cubic-bezier(.65,0,.25,1),width .6s cubic-bezier(.65,0,.25,1),transform .35s ease}
+.sp:hover:not(.on){transform:translateY(-10px)}
+.sp:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+.sp.on{flex-basis:var(--cw);width:var(--cw)}
+.sp-f{position:absolute;top:0;bottom:0;backface-visibility:hidden;transition:transform .6s cubic-bezier(.65,0,.25,1),opacity .45s ease}
+.sp-spine{left:0;width:var(--sw);background:var(--c,#2B303A);color:#fff;border-radius:3px 3px 2px 2px;box-shadow:inset 3px 0 0 rgba(255,255,255,.14),inset -4px 0 0 rgba(0,0,0,.22),0 10px 14px -10px rgba(14,17,22,.6);display:flex;flex-direction:column;align-items:center;padding:10px 0 9px;transform-origin:100% 50%}
+.sp-y{font-family:var(--mono);font-size:10px;letter-spacing:.04em;opacity:.85}
+.sp-t{flex:1;min-height:0;writing-mode:vertical-rl;font-family:var(--display);font-weight:600;font-size:14px;line-height:1.1;margin:10px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.01em}
+@media (max-width:640px){.sp-t{font-size:12px}}
+.sp-o{font-family:var(--mono);font-size:9px;letter-spacing:.12em;opacity:.8;border-top:1px solid rgba(255,255,255,.35);padding-top:6px}
+.sp-mark{width:6px;height:6px;border-radius:50%;background:#fff;margin-bottom:6px}
+.sp-cover{left:0;width:var(--cw);border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 26px 36px -18px rgba(14,17,22,.6),0 0 0 1px rgba(14,17,22,.08);transform:rotateY(-90deg);transform-origin:0 50%;opacity:0;background:var(--c,#2B303A)}
+.sp.on .sp-spine{transform:rotateY(90deg);opacity:0}
+.sp.on .sp-cover{transform:none;opacity:1}
+.sp-cover .cv-face{height:100%;aspect-ratio:auto;padding:14px}
+.sp-cover .cv-t{font-size:17px;-webkit-line-clamp:9}
+.sp-cover .cv-top{font-size:11px}
+.sp-cover.img .cv-face{border-left:0;padding:0;background:#fff}
+.sp-cover.img .cv-top,.sp-cover.img .cv-t{display:none}
+.sp-cap{text-align:center;max-width:760px;margin:8px auto 0;min-height:150px}
+.sp-cap h3{margin:0;font-family:var(--display);font-weight:800;font-size:clamp(24px,2.6vw,34px);line-height:1.1;letter-spacing:-.02em}
+.sp-cap .k{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:10px}
+.sp-cap .k b{color:var(--blue-ink);font-weight:500}
+.sp-cap .pp{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 24px;margin-top:12px;font-size:15px;color:var(--ink2)}
+.sp-cap .pp span{display:inline-flex;align-items:center;gap:8px}
+.sp-cap a{font-family:var(--mono);font-size:12px}
+.sp-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px 56px;margin-top:40px;padding-top:8px;border-top:2px solid var(--ink)}
+.sp-detail .det-sub{margin-top:24px}
+
 /* VII — mirror strips */
 .strips{border-top:2px solid var(--ink)}
 .strip{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(120px,230px);gap:6px 24px;align-items:center;width:100%;padding:14px 8px;border-bottom:1px solid var(--rule)}
@@ -279,6 +327,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
 .colo nav a{font-family:var(--mono);font-size:13px;min-height:44px;display:inline-flex;align-items:center}
 
 /* ── motion ── */
+.lic,.go{overflow-x:clip}
 .js .room-head::before{transform:scaleX(0);transition:transform 1.1s cubic-bezier(.7,0,.2,1)}
 .js .room-head .room-num{opacity:0;transform:translateY(45%);transition:opacity .7s ease .25s,transform .9s cubic-bezier(.2,.7,.2,1) .25s}
 .js .room-head .room-kicker{opacity:0;transition:opacity .6s ease .35s}
@@ -548,7 +597,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
     <div class="room-num">VI</div>
     <div><div class="room-kicker">Room VI · Interactive · Direction one</div><h2>The shelf of OECD publications about Croatia</h2></div>
   </div>
-  <p class="room-lead">Every OECD publication about Croatia, as a cover on a shelf. Take one down to see who from Croatia is named among its contributors, and which Croatian research it cites.</p>
+  <p class="room-lead">Every OECD publication about Croatia, as a spine on a shelf. Pull one out to see its cover, who from Croatia is named among its contributors, and which Croatian research it cites.</p>
   <div class="ix-tools">
     <label class="search"><span class="sr" style="position:absolute;left:-9999px">Search publications</span>
       <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
@@ -563,15 +612,20 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
     <button class="chip" type="button" id="ix1sort">Sort: by year</button>
     <span class="count" id="ix1count"></span>
   </div>
-  <div class="legend">
-    <span><span class="pip-p" style="margin-right:6px"></span>people from Croatia named in the publication</span>
-    <span><span class="pip-c" style="margin-right:6px"></span>Croatian articles it cites</span>
+  <div class="decades" role="group" aria-label="Filter by decade" id="ix1dec">
+    <button type="button" data-v="all" aria-pressed="true">All</button>
+    <button type="button" data-v="2000" aria-pressed="false">2000s</button>
+    <button type="button" data-v="2010" aria-pressed="false">2010s</button>
+    <button type="button" data-v="2020" aria-pressed="false">2020s</button>
   </div>
-  <div class="stage">
-    <div class="stage-l" id="ix1left"></div>
-    <div class="zoom" id="zoom" aria-hidden="true"><img alt="" data-pin-nopin="true"><div></div></div>
-    <aside class="stage-r" id="ix1detail" aria-live="polite"><div class="empty"><b>Take a cover down</b>Select a publication on the shelf to see who took part and whose research it cites.</div></aside>
+  <div class="sp-stage">
+    <button class="sp-nav prev" type="button" id="ix1prev" aria-label="Previous publication"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg></button>
+    <div class="spines" id="ix1left" tabindex="0" aria-label="Shelf of publications. Use the left and right arrow keys to move along it."></div>
+    <button class="sp-nav next" type="button" id="ix1next" aria-label="Next publication"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></button>
   </div>
+  <div class="sp-cap" id="ix1cap" aria-live="polite"></div>
+  <div class="zoom" id="zoom" aria-hidden="true"><img alt="" data-pin-nopin="true"><div></div></div>
+  <div class="sp-detail" id="ix1detail"></div>
 </section>
 
 <!-- VII -->
@@ -689,7 +743,7 @@ const DB = {"room1": [{"doi": "10.1787/36c20837-en", "sfx": "36c20837-en", "t": 
 (function(){
 /* ── helpers ── */
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
-function strip(s){return String(s||'').replace(/<[^>]+>/g,'');}
+function strip_(s){return String(s||'').replace(/<[^>]+>/g,'');}
 function uniqPeople(p){var seen={},out=[];(p.people||[]).forEach(function(x){if(!seen[x.name]){seen[x.name]=1;out.push(x);}});return out;}
 function tc(th){var t=(th||'').toLowerCase();
   if(/health|cancer|zdrav|care/.test(t))return 't-health';
@@ -712,7 +766,7 @@ function replay(el,cls){el.classList.remove(cls);void el.offsetWidth;el.classLis
   function mark(sel,stagger){document.querySelectorAll(sel).forEach(function(group){
     var kids=stagger?[].slice.call(group.children):[group];
     kids.forEach(function(k,i){k.classList.add('rv');if(stagger)k.style.setProperty('--d',(i*0.09)+'s');});});}
-  mark('.room-lead,.split-text,.tabs,#holds,.aside,.ix-tools,.legend,.stage,.recs > h3,.recs > p,.band-in,.sentence,.src ol,.mirror-key,#mirror,.mirror-note',false);
+  mark('.room-lead,.split-text,.tabs,#holds,.aside,.ix-tools,.legend,.stage,.decades,.sp-stage,.sp-detail,.recs > h3,.recs > p,.band-in,.sentence,.src ol,.mirror-key,#mirror,.mirror-note',false);
   mark('.facts,.rows',true);
   document.querySelectorAll('.proc .proc-s').forEach(function(s,i){s.classList.add('rv');s.style.setProperty('--d',(i*0.15)+'s');});
   var targets=document.querySelectorAll('.rv,.room-head,.tl,.proc,.lic,.go');
@@ -769,60 +823,68 @@ set('mkPub',R1.length);set('mkArt',R2.length);set('sPub',R1.length);set('sPpl',O
 /* ── Room II tabs ── */
 (function(){var g=document.querySelector('.tabs');g.addEventListener('click',function(e){var b=e.target.closest('.tab');if(!b)return;g.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});var f=b.dataset.f;var i=0;document.querySelectorAll('#holds .hold').forEach(function(h){var show=(f==='all'||h.dataset.c===f);h.hidden=!show;if(show&&!REDUCE){h.style.setProperty('--d',(i++*0.06)+'s');replay(h,'anim-rise');}});});})();
 
-/* ── Room VI: shelf ── */
-var imgBase='covers/',imgExt='.jpg',s1='year',f1='all',a1=null,imgOK={};
+/* ── Room VI: spine shelf ── */
+var imgBase='covers/',imgExt='.jpg',s1='year',f1='all',dec1='all',a1='10.1787/36c20837-en',imgOK={},L1=[],idx1=-1;
+var strip=document.getElementById('ix1left');
+function decOf(p){var y=+p.y;return y<2010?'2000':y<2020?'2010':'2020';}
+(function(){var c={all:R1.length,'2000':0,'2010':0,'2020':0};R1.forEach(function(p){c[decOf(p)]++;});
+  document.querySelectorAll('#ix1dec button').forEach(function(b){b.insertAdjacentHTML('beforeend','<span>'+c[b.dataset.v]+'</span>');});})();
 function r1(opt){
   var anim=opt&&opt.anim&&!REDUCE;
   var q=document.getElementById('ix1q').value.trim().toLowerCase();
-  var L=R1.filter(function(p){
+  L1=R1.filter(function(p){
     if(q&&p.t.toLowerCase().indexOf(q)<0)return false;
+    if(dec1!=='all'&&decOf(p)!==dec1)return false;
     if(f1==='people'&&!(p.people&&p.people.length))return false;
     if(f1==='cites'&&!(p.cites&&p.cites.length))return false;
     if(f1==='irmo'&&!p.irmo)return false;return true;});
-  if(s1==='year')L.sort(function(a,b){return a.y<b.y?-1:a.y>b.y?1:0;});
-  else L.sort(function(a,b){return uniqPeople(b).length-uniqPeople(a).length||b.cites.length-a.cites.length;});
-  document.getElementById('ix1count').textContent=L.length+' of '+R1.length;
-  var host=document.getElementById('ix1left');
-  var prev={},prevPlanks=host.querySelectorAll('.plank').length;
-  if(anim)host.querySelectorAll('.cover').forEach(function(c){prev[c.dataset.doi]=c.getBoundingClientRect();});
-  host.innerHTML='';
-  var perRow=Math.max(2,Math.floor((host.clientWidth||900)/140));
-  for(var i=0;i<L.length;i+=perRow){
-    var row=document.createElement('div');row.className='shelf-row';
-    var sh=document.createElement('div');sh.className='shelf';
-    L.slice(i,i+perRow).forEach(function(p){
-      var np=uniqPeople(p).length,nc=(p.cites||[]).length;
-      var b=document.createElement('button');b.type='button';b.dataset.doi=p.doi;
-      b.className='cover '+tc(p.th)+(p.doi===a1?' on':'');
-      b.setAttribute('aria-pressed',p.doi===a1?'true':'false');
-      b.setAttribute('aria-label',p.t+', '+p.y+'. '+np+' people from Croatia, '+nc+' Croatian articles cited.');
-      var src=imgBase?imgBase+p.sfx+imgExt:'';
-      b.innerHTML='<div class="cv-face">'+(src?'<img src="'+esc(src)+'" alt="" loading="lazy" data-pin-nopin="true">':'')+
-        '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(p.t)+'</div></div>'+
-        '<div class="cv-foot"><span class="'+(np?'':'z')+'"><i class="pip-p" aria-hidden="true"></i>'+np+'</span><span class="'+(nc?'':'z')+'"><i class="pip-c" aria-hidden="true"></i>'+nc+'</span></div>';
-      var img=b.querySelector('img');
-      if(img){if(imgOK[p.sfx]===false)img.remove();else{if(imgOK[p.sfx])b.classList.add('img');img.onload=function(){imgOK[p.sfx]=true;b.classList.add('img');};img.onerror=function(){imgOK[p.sfx]=false;img.remove();};}}
-      b.onclick=function(){hideZoom();a1=p.doi;r1();d1(p);};
-      b.onmouseenter=function(){if(b.classList.contains('img'))showZoom(b,p);};
-      b.onmouseleave=hideZoom;
-      sh.appendChild(b);
-    });
-    row.appendChild(sh);var pl=document.createElement('div');pl.className='plank'+(anim&&host.children.length>=prevPlanks?' anim':'');row.appendChild(pl);host.appendChild(row);
-  }
-  if(anim){
-    var n=0;
-    host.querySelectorAll('.cover').forEach(function(b){
-      var r0=prev[b.dataset.doi];
-      if(r0){var r=b.getBoundingClientRect(),dx=r0.left-r.left,dy=r0.top-r.top;
-        if(Math.abs(dx)>1||Math.abs(dy)>1){
-          b.style.transition='none';b.style.transform='translate('+dx+'px,'+dy+'px)';
-          requestAnimationFrame(function(){requestAnimationFrame(function(){b.style.transition='transform .65s cubic-bezier(.2,.7,.2,1)';b.style.transform='';});});
-          setTimeout(function(){b.style.transition='';},800);
-        }
-      } else {b.style.setProperty('--d',(Math.min(n++,30)*22)+'ms');b.classList.add('anim-pop');}
-    });
-  }
-  if(!L.length)host.innerHTML='<div class="none">No publications match.</div>';
+  if(s1==='year')L1.sort(function(a,b){return a.y<b.y?-1:a.y>b.y?1:0;});
+  else L1.sort(function(a,b){return uniqPeople(b).length-uniqPeople(a).length||b.cites.length-a.cites.length;});
+  document.getElementById('ix1count').textContent=L1.length+' of '+R1.length;
+  strip.innerHTML='';
+  L1.forEach(function(p,i){
+    var np=uniqPeople(p).length,nc=(p.cites||[]).length;
+    var b=document.createElement('button');b.type='button';b.className='sp '+tc(p.th);b.dataset.doi=p.doi;
+    b.setAttribute('aria-label',p.t+', '+p.y+'. '+np+' people from Croatia, '+nc+' Croatian articles cited.');
+    b.title=p.t+' ('+p.y+')';
+    var src=imgBase+p.sfx+imgExt;
+    b.innerHTML='<div class="sp-f sp-spine"><span class="sp-y">'+esc(String(p.y).slice(2))+'’</span><span class="sp-t">'+esc(p.t)+'</span>'+(np||nc?'<span class="sp-mark" aria-hidden="true"></span>':'')+'<span class="sp-o">OECD</span></div>'+
+      '<div class="sp-f sp-cover'+(imgOK[p.sfx]?' img':'')+'"><div class="cv-face">'+(imgOK[p.sfx]===false?'':'<img src="'+esc(src)+'" alt="" loading="lazy" data-pin-nopin="true">')+
+      '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(p.t)+'</div></div></div>';
+    var img=b.querySelector('img'),cv=b.querySelector('.sp-cover');
+    if(img){img.onload=function(){imgOK[p.sfx]=true;cv.classList.add('img');};img.onerror=function(){imgOK[p.sfx]=false;img.remove();};}
+    b.onclick=function(){sel1(i,true);};
+    cv.onmouseenter=function(){if(b.classList.contains('on')&&cv.classList.contains('img'))showZoom(cv,p);};
+    cv.onmouseleave=hideZoom;
+    if(anim){b.style.setProperty('--d',(Math.min(i,40)*14)+'ms');b.classList.add('anim-pop');}
+    strip.appendChild(b);
+  });
+  if(!L1.length){strip.innerHTML='<div class="none" style="margin:auto">No publications match.</div>';document.getElementById('ix1cap').innerHTML='';document.getElementById('ix1detail').innerHTML='';idx1=-1;navState();return;}
+  var keep=L1.findIndex(function(p){return p.doi===a1;});
+  idx1=-1;sel1(keep>=0?keep:0,false,true);
+}
+function centerOn(i,smooth){
+  var cs=getComputedStyle(strip),sw=parseFloat(cs.getPropertyValue('--sw')),cw=parseFloat(cs.getPropertyValue('--cw')),gap=parseFloat(cs.getPropertyValue('--gap')),pad=parseFloat(cs.paddingLeft);
+  var x=pad+i*(sw+gap)+cw/2-strip.clientWidth/2;
+  strip.scrollTo({left:Math.max(0,x),behavior:smooth&&!REDUCE?'smooth':'auto'});
+}
+function navState(){document.getElementById('ix1prev').disabled=idx1<=0;document.getElementById('ix1next').disabled=idx1<0||idx1>=L1.length-1;}
+function sel1(i,user,instant){
+  if(i<0||i>=L1.length)return;
+  hideZoom();
+  var items=strip.children;
+  if(idx1>=0&&items[idx1])items[idx1].classList.remove('on');
+  if(items[idx1])items[idx1].setAttribute('aria-pressed','false');
+  idx1=i;var b=items[i],p=L1[i];a1=p.doi;
+  b.classList.add('on');b.setAttribute('aria-pressed','true');
+  centerOn(i,!instant);navState();
+  var np=uniqPeople(p).length,nc=(p.cites||[]).length;
+  var cap=document.getElementById('ix1cap');
+  cap.innerHTML='<h3>'+esc(p.t)+'</h3><div class="k"><b>'+esc(p.y)+'</b> · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+' · '+(i+1)+' / '+L1.length+'</div>'+
+    '<div class="pp"><span><i class="pip-p" aria-hidden="true"></i>'+np+' '+(np===1?'person':'people')+' from Croatia named</span><span><i class="pip-c" aria-hidden="true"></i>'+nc+' Croatian '+(nc===1?'article':'articles')+' cited</span></div>'+
+    '<div style="margin-top:10px"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+' ↗</a></div>';
+  if(!REDUCE)replay(cap,'anim-swap');
+  d1(p);
 }
 var zoom=document.getElementById('zoom'),zt;
 function showZoom(b,p){clearTimeout(zt);var img=zoom.querySelector('img');img.src=imgBase+p.sfx+imgExt;zoom.querySelector('div').innerHTML='<b>'+esc(p.y)+'</b>'+esc(p.t);
@@ -836,22 +898,26 @@ function d1(p){
   var ppl=uniqPeople(p);
   var P=ppl.length?ppl.map(function(x){return '<div class="li"><span class="mk '+rc(x.role)+'"></span><div><div>'+esc(x.name)+'</div><div class="s">'+esc(x.inst)+'</div><div class="r">'+esc(roleEN(x.role))+' · '+esc(catEN(x.cat))+'</div></div></div>';}).join('')
     :'<div class="none">No one from Croatia is named in the front matter of this publication.</div>';
-  var C=(p.cites||[]).length?p.cites.map(function(a){return '<div class="li"><span class="mk sq"></span><div><div>'+esc(strip(a.t))+'</div><div class="s">'+esc(a.au)+(a.j?' · <i>'+esc(a.j)+'</i>':'')+' · '+esc(a.y)+'</div></div></div>';}).join('')
+  var C=(p.cites||[]).length?p.cites.map(function(a){return '<div class="li"><span class="mk sq"></span><div><div>'+esc(strip_(a.t))+'</div><div class="s">'+esc(a.au)+(a.j?' · <i>'+esc(a.j)+'</i>':'')+' · '+esc(a.y)+'</div></div></div>';}).join('')
     :'<div class="none">This publication cites none of the Croatian articles in the set.</div>';
   var d=document.getElementById('ix1detail');
-  d.className='stage-r '+tc(p.th);
-  var head='<div class="det-k">'+esc(p.y)+' · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+'</div><h3>'+esc(p.t)+'</h3><div class="meta"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+'</a></div>';
-  if(imgOK[p.sfx])head='<div class="det-cover"><img data-pin-nopin="true" src="'+esc(imgBase+p.sfx+imgExt)+'" alt="Cover of '+esc(p.t)+'"><div style="min-width:0">'+head+'</div></div>';
-  d.innerHTML='<div class="det-h">'+head+'</div>'+
-    '<div class="det-b"><div class="det-sub">People from Croatia<span class="n b">'+ppl.length+'</span></div>'+P+
-    '<div class="det-sub">Croatian research it cites<span class="n o">'+(p.cites||[]).length+'</span></div>'+C+'</div>';
+  d.innerHTML='<div><div class="det-sub">People from Croatia<span class="n b">'+ppl.length+'</span></div>'+P+'</div>'+
+    '<div><div class="det-sub">Croatian research it cites<span class="n o">'+(p.cites||[]).length+'</span></div>'+C+'</div>';
   if(!REDUCE)replay(d,'anim-swap');
-  if(window.innerWidth<=1000)d.scrollIntoView({behavior:'smooth',block:'start'});
 }
 pressGroup('ix1f',function(v){f1=v;r1({anim:true});});
+pressGroup('ix1dec',function(v){dec1=v;r1({anim:true});});
 document.getElementById('ix1sort').onclick=function(){s1=s1==='year'?'people':'year';this.textContent=s1==='year'?'Sort: by year':'Sort: most people';r1({anim:true});};
 document.getElementById('ix1q').addEventListener('input',function(){r1({anim:true});});
-var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){r1();},150);});
+document.getElementById('ix1prev').onclick=function(){sel1(idx1-1,true);};
+document.getElementById('ix1next').onclick=function(){sel1(idx1+1,true);};
+strip.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'){e.preventDefault();sel1(idx1+1,true);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();sel1(idx1-1,true);}
+  else if(e.key==='Home'){e.preventDefault();sel1(0,true);}
+  else if(e.key==='End'){e.preventDefault();sel1(L1.length-1,true);}
+});
+var rz;window.addEventListener('resize',function(){clearTimeout(rz);rz=setTimeout(function(){if(idx1>=0)centerOn(idx1,false);},150);});
 
 /* ── Room VII: mirror strips ── */
 var s2='oecd',f2='all',a2=null,lim=30;
@@ -866,7 +932,7 @@ function r2(opt){
     if(f2==='irmo'&&!a.irmo)return false;return true;});
   if(s2==='oecd')L.sort(function(a,b){return b.oecd_n-a.oecd_n||b.hr_citers-a.hr_citers||b.pc-a.pc;});
   else if(s2==='year')L.sort(function(a,b){return a.y<b.y?1:a.y>b.y?-1:0;});
-  else L.sort(function(a,b){return strip(a.t).localeCompare(strip(b.t));});
+  else L.sort(function(a,b){return strip_(a.t).localeCompare(strip_(b.t));});
   document.getElementById('ix2count').textContent=L.length+' of '+R2.length;
   var host=document.getElementById('ix2left');host.innerHTML='';
   L.slice(0,lim).forEach(function(a,idx){
@@ -874,8 +940,8 @@ function r2(opt){
     if(anim&&idx>=(anim.from||0)){b.classList.add('anim-rise');b.style.setProperty('--d',(Math.min(idx-(anim.from||0),25)*25)+'ms');}b.type='button';b.className='strip'+(a.doi===a2?' on':'')+(b.classList.contains('anim-rise')?' anim-rise':'');
     b.setAttribute('aria-pressed',a.doi===a2?'true':'false');
     var dots='';(a.citers||[]).slice(0,24).forEach(function(c){dots+='<i class="'+(c.hr?'h':'')+'"></i>';});
-    b.setAttribute('aria-label',strip(a.t)+'. Cited by '+a.oecd_n+' OECD documents, '+a.hr_citers+' about Croatia.');
-    b.innerHTML='<div style="min-width:0"><div class="st-t">'+esc(strip(a.t))+(a.irmo?'<span class="irmo-tag">IRMO</span>':'')+'</div><div class="st-a">'+esc(a.au)+(a.j?' · <i>'+esc(a.j)+'</i>':'')+'</div></div>'+
+    b.setAttribute('aria-label',strip_(a.t)+'. Cited by '+a.oecd_n+' OECD documents, '+a.hr_citers+' about Croatia.');
+    b.innerHTML='<div style="min-width:0"><div class="st-t">'+esc(strip_(a.t))+(a.irmo?'<span class="irmo-tag">IRMO</span>':'')+'</div><div class="st-a">'+esc(a.au)+(a.j?' · <i>'+esc(a.j)+'</i>':'')+'</div></div>'+
       '<div class="st-y">'+esc(a.y)+'</div><div class="st-m" aria-hidden="true">'+dots+'<b>'+a.oecd_n+'</b></div>';
     b.onclick=function(){a2=a.doi;r2();d2(a);};
     host.appendChild(b);
@@ -886,7 +952,7 @@ function r2(opt){
 function d2(a){
   var D=(a.citers||[]).map(function(c){return '<div class="li"><span class="mk sq'+(c.hr?'':' g')+'"></span><div><div><a href="https://doi.org/'+esc(c.doi)+'" target="_blank" rel="noopener">'+esc(c.t)+'</a></div><div class="r'+(c.hr?' o':'')+'" style="'+(c.hr?'':'color:var(--muted)')+'">'+(c.hr?'Publication about Croatia':'Thematic publication')+' · '+esc(c.y)+'</div></div></div>';}).join('');
   var d=document.getElementById('ix2detail');d.className='stage-r';
-  d.innerHTML='<div class="det-h" style="background:var(--orange);color:var(--ink)"><div class="det-k">'+esc(a.y)+(a.j?' · '+esc(a.j):'')+(a.irmo?' · IRMO':'')+'</div><h3>'+esc(strip(a.t))+'</h3><div class="meta" style="word-break:normal">'+esc(a.au)+'</div><div class="meta"><a style="color:var(--ink)" href="https://doi.org/'+esc(a.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(a.doi)+'</a></div></div>'+
+  d.innerHTML='<div class="det-h" style="background:var(--orange);color:var(--ink)"><div class="det-k">'+esc(a.y)+(a.j?' · '+esc(a.j):'')+(a.irmo?' · IRMO':'')+'</div><h3>'+esc(strip_(a.t))+'</h3><div class="meta" style="word-break:normal">'+esc(a.au)+'</div><div class="meta"><a style="color:var(--ink)" href="https://doi.org/'+esc(a.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(a.doi)+'</a></div></div>'+
     '<div class="det-b"><div class="det-sub">Cited by OECD documents<span class="n o">'+a.oecd_n+'</span></div>'+(a.hr_citers?'<div class="s" style="font-size:14px;color:var(--muted);margin-bottom:6px">'+a.hr_citers+' of them about Croatia</div>':'')+D+'</div>';
   if(!REDUCE)replay(d,'anim-swap');
   if(window.innerWidth<=1000)d.scrollIntoView({behavior:'smooth',block:'start'});
