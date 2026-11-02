@@ -285,6 +285,38 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
 .sp-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:24px 56px;margin-top:40px;padding-top:8px;border-top:2px solid var(--ink)}
 .sp-detail .det-sub{margin-top:24px}
 
+/* VI — series spines */
+.sp-stage{--swn:34px}
+@media (max-width:640px){.sp-stage{--swn:28px}}
+.sp.note{flex-basis:var(--swn);width:var(--swn)}
+.sp.note.on{flex-basis:var(--cw);width:var(--cw)}
+.sp.note .sp-spine{width:var(--swn);background:#FBFAF6;color:var(--ink);box-shadow:inset 4px 0 0 var(--c),inset -2px 0 0 rgba(0,0,0,.08),0 8px 12px -10px rgba(14,17,22,.5);height:88%;top:auto;bottom:0}
+.sp.note .sp-t{font-family:var(--sans);font-weight:500;font-size:11.5px}
+.sp.note .sp-o{border-top-color:rgba(14,17,22,.25)}
+.sp.note .sp-mark{background:var(--c)}
+.sp-spine::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit}
+.ser-eco .sp-spine::before,.ser-chip.ser-eco .sw::before{background:linear-gradient(#fff,#fff) 0 34px/100% 2px no-repeat,linear-gradient(#fff,#fff) 0 40px/100% 1px no-repeat,linear-gradient(#fff,#fff) 0 calc(100% - 40px)/100% 1px no-repeat,linear-gradient(#fff,#fff) 0 calc(100% - 34px)/100% 2px no-repeat;opacity:.85}
+.ser-health .sp-spine::before,.ser-chip.ser-health .sw::before{background:repeating-linear-gradient(90deg,rgba(255,255,255,.16) 0 3px,transparent 3px 9px)}
+.ser-cancer .sp-spine::before,.ser-chip.ser-cancer .sw::before{background:radial-gradient(circle,rgba(255,255,255,.28) 1.2px,transparent 1.6px) 0 0/8px 8px}
+.ser-wgb .sp-spine::before,.ser-chip.ser-wgb .sw::before{background:repeating-linear-gradient(-45deg,rgba(255,255,255,.13) 0 2px,transparent 2px 8px)}
+.ser-beps .sp-spine::before,.ser-chip.ser-beps .sw::before{background:linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)) 5px 0/2px 100% no-repeat,linear-gradient(rgba(255,255,255,.75),rgba(255,255,255,.75)) calc(100% - 7px) 0/2px 100% no-repeat}
+.ser-chip.ser-beps .sw::before{background-position:2px 0,calc(100% - 4px) 0}
+.ser-gf .sp-spine::before,.ser-chip.ser-gf .sw::before{background:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px) 0 0/100% 10px,linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px) 0 0/10px 100%}
+.ser-rev .sp-spine::before,.ser-chip.ser-rev .sw::before{background:linear-gradient(#fff,#fff) 0 0/100% 46px no-repeat}
+.ser-rev .sp-y{position:relative;z-index:1;color:var(--ink);font-weight:500}
+.ser-rev .sp-t{margin-top:24px}
+.ser-chip.ser-rev .sw::before{background-size:100% 8px}
+.sp-spine > *{position:relative}
+.series{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 8px;margin:20px auto 0;max-width:1100px}
+.ser-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;font-weight:500;min-height:40px;padding:0 12px 0 8px;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);cursor:pointer}
+.ser-chip:hover{border-color:var(--ink)}
+.ser-chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ser-chip .sw{position:relative;width:12px;height:24px;border-radius:2px;background:var(--c);overflow:hidden;flex:0 0 auto}
+.ser-chip .sw::before{content:'';position:absolute;inset:0}
+.ser-chip.note .sw{width:8px;background:#FBFAF6;box-shadow:inset 3px 0 0 var(--c),0 0 0 1px rgba(14,17,22,.15)}
+.ser-chip .n{font-family:var(--mono);font-size:12px;opacity:.6}
+.sp-cap .sr{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;padding:4px 10px;border-radius:999px;border:1px solid var(--rule);color:var(--ink2)}
+
 /* VII — mirror strips */
 .strips{border-top:2px solid var(--ink)}
 .strip{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:minmax(0,1fr) 64px minmax(120px,230px);gap:6px 24px;align-items:center;width:100%;padding:14px 8px;border-bottom:1px solid var(--rule)}
@@ -618,6 +650,7 @@ code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:1px
     <button type="button" data-v="2010" aria-pressed="false">2010s</button>
     <button type="button" data-v="2020" aria-pressed="false">2020s</button>
   </div>
+  <div class="series" role="group" aria-label="Filter by series" id="ix1ser"></div>
   <div class="sp-stage">
     <button class="sp-nav prev" type="button" id="ix1prev" aria-label="Previous publication"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg></button>
     <div class="spines" id="ix1left" tabindex="0" aria-label="Shelf of publications. Use the left and right arrow keys to move along it."></div>
@@ -824,16 +857,38 @@ set('mkPub',R1.length);set('mkArt',R2.length);set('sPub',R1.length);set('sPpl',O
 (function(){var g=document.querySelector('.tabs');g.addEventListener('click',function(e){var b=e.target.closest('.tab');if(!b)return;g.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});var f=b.dataset.f;var i=0;document.querySelectorAll('#holds .hold').forEach(function(h){var show=(f==='all'||h.dataset.c===f);h.hidden=!show;if(show&&!REDUCE){h.style.setProperty('--d',(i++*0.06)+'s');replay(h,'anim-rise');}});});})();
 
 /* ── Room VI: spine shelf ── */
+var SERIES=[
+  {id:'eco',name:'Economic Surveys',c:'#1F45C9',test:function(p){return /Economic Surveys|Études économiques/.test(p.t);}},
+  {id:'health',name:'Country Health Profiles',c:'#0B5F85',test:function(p){return /Country Health Profile|pregled stanja zdravlja/.test(p.t)||(/^(Croatia|Hrvatska)$/.test(p.t)&&/state of health|health status/i.test(p.th));}},
+  {id:'cancer',name:'Country Cancer Profiles',c:'#8E2A52',test:function(p){return /Cancer Profile|području raka/.test(p.t);}},
+  {id:'rev',name:'OECD Reviews',c:'#142F8C',test:function(p){return /^OECD (Reviews? of|Investment Policy Reviews|Capital Market Review)/.test(p.t);}},
+  {id:'wgb',name:'Anti-Bribery Convention',c:'#2B303A',test:function(p){return /Bribery|podmićivanja|1997 Recommendation/.test(p.t);}},
+  {id:'beps',name:'Dispute Resolution (BEPS)',c:'#5B34B8',test:function(p){return /Making Dispute Resolution/.test(p.t);}},
+  {id:'gf',name:'Global Forum on Tax Transparency',c:'#0E6E5A',test:function(p){return /^Global Forum on Transparency/.test(p.t);}},
+  {id:'note',name:'Country notes',c:'#B4470B',note:true,test:function(p){return /^(Croatia|Hrvatska)$/.test(p.t);}}
+];
+function seriesOf(p){if(p._s===undefined){p._s=null;for(var i=0;i<SERIES.length;i++){if(SERIES[i].test(p)){p._s=SERIES[i];break;}}}return p._s;}
+function dispT(p){return /^(Croatia|Hrvatska)$/.test(p.t)&&p.th?p.th:p.t;}
+var ser1='all';
 var imgBase='covers/',imgExt='.jpg',s1='year',f1='all',dec1='all',a1='10.1787/36c20837-en',imgOK={},L1=[],idx1=-1;
 var strip=document.getElementById('ix1left');
 function decOf(p){var y=+p.y;return y<2010?'2000':y<2020?'2010':'2020';}
 (function(){var c={all:R1.length,'2000':0,'2010':0,'2020':0};R1.forEach(function(p){c[decOf(p)]++;});
   document.querySelectorAll('#ix1dec button').forEach(function(b){b.insertAdjacentHTML('beforeend','<span>'+c[b.dataset.v]+'</span>');});})();
+(function(){var host=document.getElementById('ix1ser');
+  SERIES.forEach(function(s){var n=R1.filter(function(p){return seriesOf(p)===s;}).length;if(!n)return;
+    var b=document.createElement('button');b.type='button';b.className='ser-chip ser-'+s.id+(s.note?' note':'');b.style.setProperty('--c',s.c);
+    b.dataset.v=s.id;b.setAttribute('aria-pressed','false');
+    b.innerHTML='<span class="sw" aria-hidden="true"></span>'+esc(s.name)+' <span class="n">'+n+'</span>';
+    b.onclick=function(){ser1=ser1===s.id?'all':s.id;host.querySelectorAll('.ser-chip').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.v===ser1?'true':'false');});r1({anim:true});};
+    host.appendChild(b);});
+})();
 function r1(opt){
   var anim=opt&&opt.anim&&!REDUCE;
   var q=document.getElementById('ix1q').value.trim().toLowerCase();
   L1=R1.filter(function(p){
-    if(q&&p.t.toLowerCase().indexOf(q)<0)return false;
+    if(ser1!=='all'&&!(seriesOf(p)&&seriesOf(p).id===ser1))return false;
+    if(q&&(p.t+' '+dispT(p)).toLowerCase().indexOf(q)<0)return false;
     if(dec1!=='all'&&decOf(p)!==dec1)return false;
     if(f1==='people'&&!(p.people&&p.people.length))return false;
     if(f1==='cites'&&!(p.cites&&p.cites.length))return false;
@@ -844,13 +899,15 @@ function r1(opt){
   strip.innerHTML='';
   L1.forEach(function(p,i){
     var np=uniqPeople(p).length,nc=(p.cites||[]).length;
-    var b=document.createElement('button');b.type='button';b.className='sp '+tc(p.th);b.dataset.doi=p.doi;
-    b.setAttribute('aria-label',p.t+', '+p.y+'. '+np+' people from Croatia, '+nc+' Croatian articles cited.');
-    b.title=p.t+' ('+p.y+')';
+    var S=seriesOf(p),T=dispT(p);
+    var b=document.createElement('button');b.type='button';b.className='sp '+tc(p.th)+(S?' ser-'+S.id:'')+(S&&S.note?' note':'');b.dataset.doi=p.doi;
+    if(S)b.style.setProperty('--c',S.c);
+    b.setAttribute('aria-label',T+', '+p.y+'. '+np+' people from Croatia, '+nc+' Croatian articles cited.');
+    b.title=T+' ('+p.y+')'+(S?' · '+S.name:'');
     var src=imgBase+p.sfx+imgExt;
-    b.innerHTML='<div class="sp-f sp-spine"><span class="sp-y">'+esc(String(p.y).slice(2))+'’</span><span class="sp-t">'+esc(p.t)+'</span>'+(np||nc?'<span class="sp-mark" aria-hidden="true"></span>':'')+'<span class="sp-o">OECD</span></div>'+
+    b.innerHTML='<div class="sp-f sp-spine"><span class="sp-y">'+esc(String(p.y).slice(2))+'’</span><span class="sp-t">'+esc(T)+'</span>'+(np||nc?'<span class="sp-mark" aria-hidden="true"></span>':'')+'<span class="sp-o">'+(S&&S.note?'NOTE':'OECD')+'</span></div>'+
       '<div class="sp-f sp-cover'+(imgOK[p.sfx]?' img':'')+'"><div class="cv-face">'+(imgOK[p.sfx]===false?'':'<img src="'+esc(src)+'" alt="" loading="lazy" data-pin-nopin="true">')+
-      '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(p.t)+'</div></div></div>';
+      '<div class="cv-top"><span>OECD</span><span>'+esc(p.y)+'</span></div><div class="cv-t">'+esc(T)+'</div></div></div>';
     var img=b.querySelector('img'),cv=b.querySelector('.sp-cover');
     if(img){img.onload=function(){imgOK[p.sfx]=true;cv.classList.add('img');};img.onerror=function(){imgOK[p.sfx]=false;img.remove();};}
     b.onclick=function(){sel1(i,true);};
@@ -865,7 +922,9 @@ function r1(opt){
 }
 function centerOn(i,smooth){
   var cs=getComputedStyle(strip),sw=parseFloat(cs.getPropertyValue('--sw')),cw=parseFloat(cs.getPropertyValue('--cw')),gap=parseFloat(cs.getPropertyValue('--gap')),pad=parseFloat(cs.paddingLeft);
-  var x=pad+i*(sw+gap)+cw/2-strip.clientWidth/2;
+  var swn=parseFloat(cs.getPropertyValue('--swn'))||sw,x=pad;
+  for(var j=0;j<i;j++)x+=((L1[j]&&seriesOf(L1[j])&&seriesOf(L1[j]).note)?swn:sw)+gap;
+  x+=cw/2-strip.clientWidth/2;
   strip.scrollTo({left:Math.max(0,x),behavior:smooth&&!REDUCE?'smooth':'auto'});
 }
 function navState(){document.getElementById('ix1prev').disabled=idx1<=0;document.getElementById('ix1next').disabled=idx1<0||idx1>=L1.length-1;}
@@ -880,14 +939,16 @@ function sel1(i,user,instant){
   centerOn(i,!instant);navState();
   var np=uniqPeople(p).length,nc=(p.cites||[]).length;
   var cap=document.getElementById('ix1cap');
-  cap.innerHTML='<h3>'+esc(p.t)+'</h3><div class="k"><b>'+esc(p.y)+'</b> · '+esc((p.th||'').split('/')[0])+(p.irmo?' · IRMO':'')+' · '+(i+1)+' / '+L1.length+'</div>'+
+  var S=seriesOf(p),T=dispT(p),sl='';
+  if(S){var mem=R1.filter(function(x){return seriesOf(x)===S;}).sort(function(a,b){return a.y<b.y?-1:a.y>b.y?1:0;});sl='<div class="sr">'+(S.note?'Country note · one of '+mem.length:'Series · '+esc(S.name)+' · '+(mem.indexOf(p)+1)+' of '+mem.length)+'</div>';}
+  cap.innerHTML='<h3>'+esc(T)+'</h3><div class="k"><b>'+esc(p.y)+'</b>'+(T===p.t?' · '+esc((p.th||'').split('/')[0]):'')+(p.irmo?' · IRMO':'')+' · '+(i+1)+' / '+L1.length+'</div>'+sl+
     '<div class="pp"><span><i class="pip-p" aria-hidden="true"></i>'+np+' '+(np===1?'person':'people')+' from Croatia named</span><span><i class="pip-c" aria-hidden="true"></i>'+nc+' Croatian '+(nc===1?'article':'articles')+' cited</span></div>'+
     '<div style="margin-top:10px"><a href="https://doi.org/'+esc(p.doi)+'" target="_blank" rel="noopener">doi.org/'+esc(p.doi)+' ↗</a></div>';
   if(!REDUCE)replay(cap,'anim-swap');
   d1(p);
 }
 var zoom=document.getElementById('zoom'),zt;
-function showZoom(b,p){clearTimeout(zt);var img=zoom.querySelector('img');img.src=imgBase+p.sfx+imgExt;zoom.querySelector('div').innerHTML='<b>'+esc(p.y)+'</b>'+esc(p.t);
+function showZoom(b,p){clearTimeout(zt);var img=zoom.querySelector('img');img.src=imgBase+p.sfx+imgExt;zoom.querySelector('div').innerHTML='<b>'+esc(p.y)+'</b>'+esc(dispT(p));
   var r=b.getBoundingClientRect(),W=300,H=W*1.414+56,x=r.right+16,y=r.top+r.height/2-H/2;
   if(x+W>window.innerWidth-12)x=r.left-W-16;
   y=Math.max(68,Math.min(y,window.innerHeight-H-12));
